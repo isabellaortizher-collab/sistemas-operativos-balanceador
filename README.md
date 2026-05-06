@@ -175,12 +175,80 @@ http://192.168.50.3:8080
 
 ---
 
+## 🔁 Algoritmos de balanceo implementados
+
+Se configuraron dos algoritmos de balanceo en Apache:
+
+### 1. Round Robin (por defecto)
+Distribuye las peticiones de manera equitativa entre los servidores backend.
+
+```apache
+ProxySet lbmethod=byrequests
+```
+
+---
+
+### 2. Least Connections
+Envía las peticiones al servidor con menos conexiones activas.
+
+```apache
+ProxySet lbmethod=bybusyness
+```
+
+---
+
+### 🔄 Cómo cambiar de algoritmo
+
+Editar el archivo:
+
+```bash
+nano balanceador/apache.conf
+```
+
+Y cambiar la línea:
+
+```apache
+ProxySet lbmethod=...
+```
+
+Luego reiniciar:
+
+```bash
+sudo docker-compose down
+sudo docker-compose up --build
+```
+
+---
+
+### 🎯 Propósito
+
+Esto permite comparar el comportamiento del sistema bajo diferentes estrategias de balanceo, como lo requiere el proyecto.
+
+---
+
 ## 🧪 Verificación
 
 - Recargar la página varias veces
 - Debe cambiar entre backend1, backend2 y backend3
 
 ---
+
+## 🧪 Prueba de balanceo
+
+Para verificar el funcionamiento del balanceador sin interferencia de caché del navegador:
+
+```bash
+for i in {1..10}; do curl http://192.168.50.3:8080; echo ""; done
+```
+
+Resultado esperado:
+
+- Respuestas alternando entre:
+  - Backend 1
+  - Backend 2
+  - Backend 3
+
+Esto confirma que el balanceador distribuye correctamente las peticiones.
 
 ## ✅ Estado actual
 

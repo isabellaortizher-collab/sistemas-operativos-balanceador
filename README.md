@@ -1,5 +1,5 @@
-# 🖥️ PROYECTO 1 — Balanceador de Carga con Apache y Docker
-Proyecto de Curso 2026-1 · Universidad Autónoma de Occidente · Servicios Telemáticos
+# 🖥️ PROYECTO 1 — Balanceador de Carga con Apache y Docker  
+Proyecto de Curso 2026-1 · Universidad Autónoma de Occidente · Servicios Telemáticos  
 
 ---
 
@@ -16,26 +16,65 @@ Proyecto de Curso 2026-1 · Universidad Autónoma de Occidente · Servicios Tele
 
 ---
 
-## 📌 ¿Qué se hizo?
+## 👩‍💻 Contribución individual — Isabella Ortiz Hernández
 
-Se construyó la **infraestructura base del sistema**:
+En este proyecto, mi responsabilidad principal fue la implementación de la **Parte 1: Clúster de servidores web con balanceo de carga**, encargándome de la infraestructura base del sistema.
 
-- Máquina virtual con Vagrant
-- Instalación de Docker y Docker Compose
-- 3 servidores backend con Nginx
-- 1 balanceador de carga con Apache
-- Orquestación con Docker Compose
+### 🧩 Alcance de mi trabajo
+
+### 1. Despliegue de infraestructura base
+- Configuración de máquina virtual con Vagrant (Ubuntu 22.04)
+- Instalación y verificación de Docker y Docker Compose
+- Creación del entorno de trabajo del proyecto
+
 ---
+
+### 2. Implementación de servidores backend
+- Despliegue de 3 servidores web independientes usando Nginx en contenedores Docker:
+  - backend1
+  - backend2
+  - backend3
+- Configuración de páginas `index.html` para identificar cada nodo
+
+📌 Objetivo: permitir identificar claramente qué servidor responde a cada petición.
+
+---
+
+### 3. Configuración del balanceador de carga
+- Implementación de Apache HTTP Server como frontend
+- Uso del módulo **mod_proxy_balancer**
+- Configuración de proxy inverso hacia los 3 backends
+
+---
+
+### 4. Implementación de algoritmos de balanceo
+Se configuraron y validaron dos estrategias:
+
+- **Round Robin (byrequests)** → distribución equitativa de solicitudes
+- **Least Connections (bybusyness)** → asignación al servidor con menor carga
+
+---
+
+### 5. Orquestación con Docker Compose
+- Definición de servicios en `docker-compose.yml`
+- Conexión de todos los contenedores en una misma red
+- Exposición del balanceador en el puerto 8080
+
+---
+
+### 6. Pruebas funcionales del sistema
+- Ejecución de pruebas con múltiples solicitudes HTTP
+- Verificación de alternancia entre backend1, backend2 y backend3
+- Validación del correcto funcionamiento del balanceador
+
+---
+
 ## 🧠 Decisión de diseño
 
 Se implementaron **3 contenedores backend independientes (backend1, backend2, backend3)** en lugar de escalar un único servicio.
 
-Esto se hizo para:
-
-- Facilitar la identificación visual de cada nodo
-- Validar claramente el balanceo de carga
-- Cumplir con el requisito académico de distinguir cada servidor
 ---
+
 ## 🖥️ Entorno de trabajo
 
 - Ubuntu 22.04 (Vagrant)
@@ -43,30 +82,11 @@ Esto se hizo para:
 
 ---
 
-## ⚙️ Instalación
-
-Dentro de la VM:
-
-```bash
-vagrant ssh servidor
-sudo apt update
-sudo apt install -y docker.io docker-compose
-```
-
 Verificación:
 
 ```bash
 docker --version
 docker-compose --version
-```
-
----
-
-## 📁 Creación del proyecto
-
-```bash
-mkdir proyecto1
-cd proyecto1
 ```
 
 ---
@@ -113,7 +133,7 @@ COPY index.html /usr/share/nginx/html/index.html
 **index.html** (ejemplo)
 
 ```html
-<h1>Backend 1</h1>
+<h1>Backend X</h1>
 ```
 
 ---
@@ -259,36 +279,11 @@ Resultado esperado:
 
 Esto confirma que el balanceador distribuye correctamente las peticiones.
 
-## ✅ Estado actual
-
-- ✔ Balanceador funcionando
-- ✔ 3 backends activos
-- ✔ Docker funcionando
-
 ---
 
-## ⚠️ Pendiente (equipo)
+## 🔄 Extensión del proyecto (integración futura del equipo)
 
-### 🔴 Integrar aplicación real
-https://github.com/julianviafara-arch/CybersecurityLab
-
-### 🔴 Cambiar algoritmo
-Modificar:
-
-```apache
-ProxySet lbmethod=byrequests
-```
-
-### 🔴 Pruebas de carga
-Usar Artillery
-
-### 🔴 Métricas
-- Latencia
-- Throughput
-- Errores
-
-### 🔴 Documentación
-- Informe IEEE
+Esta infraestructura queda preparada para la integración de la aplicación CybersecurityLab, pruebas de carga con Artillery y análisis de métricas por parte del equipo.
 
 ---
 
@@ -301,4 +296,4 @@ sudo docker-compose down
 ```
 ---
 ## 🎯 Conclusión
-Se dejó lista la infraestructura base con balanceo de carga funcional, preparada para integrar una aplicación real y realizar pruebas de rendimiento.
+Se implementó un clúster de servidores web con balanceo de carga funcional utilizando Apache y Docker, permitiendo la distribución de solicitudes entre múltiples nodos backend de forma eficiente y escalable.

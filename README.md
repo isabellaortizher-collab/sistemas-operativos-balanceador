@@ -25,9 +25,17 @@ Se construyó la **infraestructura base del sistema**:
 - 3 servidores backend con Nginx
 - 1 balanceador de carga con Apache
 - Orquestación con Docker Compose
-
 ---
+## 🧠 Decisión de diseño
 
+Se implementaron **3 contenedores backend independientes (backend1, backend2, backend3)** en lugar de escalar un único servicio.
+
+Esto se hizo para:
+
+- Facilitar la identificación visual de cada nodo
+- Validar claramente el balanceo de carga
+- Cumplir con el requisito académico de distinguir cada servidor
+---
 ## 🖥️ Entorno de trabajo
 
 - Ubuntu 22.04 (Vagrant)
@@ -122,11 +130,12 @@ COPY apache.conf /usr/local/apache2/conf/httpd.conf
 **apache.conf**
 
 ```apache
-LoadModule mpm_event_module modules/mod_mpm_event.so
 LoadModule proxy_module modules/mod_proxy.so
 LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
 LoadModule proxy_http_module modules/mod_proxy_http.so
+
 LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so
+LoadModule lbmethod_bybusyness_module modules/mod_lbmethod_bybusyness.so
 
 Listen 80
 

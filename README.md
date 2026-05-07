@@ -157,8 +157,6 @@ LoadModule proxy_http_module modules/mod_proxy_http.so
 LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so
 LoadModule lbmethod_bybusyness_module modules/mod_lbmethod_bybusyness.so
 
-Listen 80
-
 <Proxy "balancer://cluster">
     BalancerMember http://backend1:80
     BalancerMember http://backend2:80

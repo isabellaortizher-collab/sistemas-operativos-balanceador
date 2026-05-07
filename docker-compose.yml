@@ -2,17 +2,24 @@ version: '3.8'
 
 services:
 
+  # BACKENDS EXISTENTES
   backend1:
     build: ./backend1
     container_name: backend1
+    networks:
+      - proyecto_net
 
   backend2:
     build: ./backend2
     container_name: backend2
+    networks:
+      - proyecto_net
 
   backend3:
     build: ./backend3
     container_name: backend3
+    networks:
+      - proyecto_net
 
   balanceador:
     build: ./balanceador
@@ -23,3 +30,33 @@ services:
       - backend1
       - backend2
       - backend3
+    networks:
+      - proyecto_net
+
+  # FRONTENDS NUEVOS
+  frontend1:
+    build: ./frontend1
+    container_name: frontend1
+    networks:
+      - proyecto_net
+
+  frontend2:
+    build: ./frontend2
+    container_name: frontend2
+    networks:
+      - proyecto_net
+
+  frontend-balancer:
+    build: ./frontend-balancer
+    container_name: frontend-balancer
+    ports:
+      - "8090:80"
+    depends_on:
+      - frontend1
+      - frontend2
+    networks:
+      - proyecto_net
+
+networks:
+  proyecto_net:
+    driver: bridge

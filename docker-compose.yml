@@ -1,25 +1,22 @@
-version: '3.8'
-
+version: '3'
 services:
-
-  # BACKENDS EXISTENTES
   backend1:
     build: ./backend1
     container_name: backend1
     networks:
-      - proyecto_net
+      - red_balanceador
 
   backend2:
     build: ./backend2
     container_name: backend2
     networks:
-      - proyecto_net
+      - red_balanceador
 
   backend3:
     build: ./backend3
     container_name: backend3
     networks:
-      - proyecto_net
+      - red_balanceador
 
   balanceador:
     build: ./balanceador
@@ -31,32 +28,52 @@ services:
       - backend2
       - backend3
     networks:
-      - proyecto_net
+      - red_balanceador
 
-  # FRONTENDS NUEVOS
-  frontend1:
-    build: ./frontend1
-    container_name: frontend1
-    networks:
-      - proyecto_net
-
-  frontend2:
-    build: ./frontend2
-    container_name: frontend2
-    networks:
-      - proyecto_net
-
-  frontend-balancer:
-    build: ./frontend-balancer
-    container_name: frontend-balancer
+  apache-exporter:
+    image: bitnami/apache-exporter:latest
+    container_name: apache-exporter
+    command: --scrape_uri=http://balanceador/server-status?auto
     ports:
-      - "8090:80"
+      - "9117:9117"
     depends_on:
-      - frontend1
-      - frontend2
+      - balanceador
     networks:
-      - proyecto_net
+      - red_balanceador
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - red_balanceador
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - red_balanceador
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    networks:
+      - red_balanceador
 
 networks:
-  proyecto_net:
+  red_balanceador:
     driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:

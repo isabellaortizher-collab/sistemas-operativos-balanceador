@@ -6,36 +6,7 @@ Proyecto final de Sistemas Operativos. Implementación de una infraestructura co
 
 ## 📐 Arquitectura
 
-```
-                        ┌─────────────┐
-                        │   Cliente   │
-                        │ :8080       │
-                        └──────┬──────┘
-                               │
-                        ┌──────▼──────┐
-                        │  Balanceador │
-                        │  Apache 2.4  │
-                        │  (Round Robin│
-                        │  / Busyness) │
-                        └──┬───┬───┬──┘
-                           │   │   │
-               ┌───────────┘   │   └───────────┐
-               │               │               │
-        ┌──────▼─────┐  ┌──────▼─────┐  ┌──────▼─────┐
-        │  Backend 1  │  │  Backend 2  │  │  Backend 3  │
-        │  nginx:80   │  │  nginx:80   │  │  nginx:80   │
-        └─────────────┘  └─────────────┘  └─────────────┘
-
-        ┌─────────────┐  ┌─────────────┐
-        │  Prometheus  │  │   Grafana   │
-        │   :9090      │  │   :3000     │
-        └──────┬───────┘  └─────────────┘
-               │
-        ┌──────▼──────────────────┐
-        │  apache-exporter :9117  │
-        │  node-exporter   :9100  │
-        └─────────────────────────┘
-```
+<img width="1411" height="770" alt="image" src="https://github.com/user-attachments/assets/455ab83d-aea1-4333-bbf8-9d46a91dae4b" />
 
 ---
 
